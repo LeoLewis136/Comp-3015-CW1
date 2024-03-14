@@ -33,7 +33,7 @@ void SceneBasic_Uniform::initScene()
 	view = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 	
-	model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
+	model = glm::rotate(model, glm::radians(0.0f), vec3(1.0f, 0.0f, 0.0f));
 	model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	
@@ -41,41 +41,41 @@ void SceneBasic_Uniform::initScene()
 	To be reimplemented when normal mapping is complete */
 
 	// ---- Point light setup ---- //
-	//for (int i = 0; i < 3; i++) {
-	//	std::stringstream name;
-	//	float x, z;
+	for (int i = 0; i < 3; i++) {
+		std::stringstream name;
+		float x, z;
 
-	//	name << "lights[" << i << "].Position";
-	//	x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
-	//	z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
+		name << "lights[" << i << "].Position";
+		x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
+		z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
 
-	//	standardShaders.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
-	//}
+		standardShaders.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
+	}
 
-	//// Scene light values
-	//// Specular
-	//standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
-	//standardShaders.setUniform("lights[1].Specular", vec3(0.8f, 0.8f, 0.0f)); // LD
-	//standardShaders.setUniform("lights[2].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
+	// Scene light values
+	// Specular
+	standardShaders.setUniform("lights[0].Specular", vec3(1.0f, 0.0f, 0.0f)); // LD
+	standardShaders.setUniform("lights[1].Specular", vec3(0.0f, 0.5f, 0.0f)); // LD
+	standardShaders.setUniform("lights[2].Specular", vec3(0.0f, 0.0f, 1.0f)); // LD
 
-	//// Ambient
-	//standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
-	//standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.2f, 0.0f)); // LA
-	//standardShaders.setUniform("lights[2].Ambient", vec3(0.2f, 0.0f, 0.0f)); // LA
+	// Ambient
+	standardShaders.setUniform("lights[0].Ambient", vec3(0.2f, 0.0f, 0.0f)); // LA
+	standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.2f, 0.0f)); // LA
+	standardShaders.setUniform("lights[2].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
 	
 	// --- Temporary --- Single light source uniform setup
-	standardShaders.setUniform("Light.Position", vec3(5.0f, 5.0f, 5.0f));
+	/*standardShaders.setUniform("Light.Position", vec3(5.0f, 5.0f, 5.0f));
 	standardShaders.setUniform("Light.Specular", vec3(1.0f, 1.0f, 1.0f));
-	standardShaders.setUniform("Light.Ambient", vec3(0.2f));
+	standardShaders.setUniform("Light.Ambient", vec3(0.2f));*/
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
-	standardShaders.setUniform("Fog.MinDist", 5.0f);
-	standardShaders.setUniform("Fog.MaxDist", 5.0f);
+	standardShaders.setUniform("Fog.MinDist", 0.0f);
+	standardShaders.setUniform("Fog.MaxDist", 3.0f);
 
 	// Standard material values
 	standardShaders.setUniform("Material.Colour", vec3(0.2f, 0.55f, 0.9f)); // KD
-	standardShaders.setUniform("Material.Specular", vec3(0.8f, 0.8f, 0.8f)); // KS 
+	standardShaders.setUniform("Material.Specular", vec3(0.2f, 0.55f, 0.9f)); // KS 
 	standardShaders.setUniform("Material.Ambient", vec3(0.2f, 0.55f, 0.9f)); // KA 
 	standardShaders.setUniform("Material.Shininess", 100.0f); // Shininess
 
@@ -86,7 +86,7 @@ void SceneBasic_Uniform::initScene()
 	testMesh = ObjMesh::load("media/port.obj", true);
 
 	GLuint woodTexture = Texture::loadTexture("media/texture/WoodTexture.jpg");
-	GLuint woodNormal = Texture::loadTexture("media/texture/TempNormal.jpg");
+	GLuint woodNormal = Texture::loadTexture("media/texture/WoodNormal.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, woodTexture);
 	glActiveTexture(GL_TEXTURE1);
