@@ -2,6 +2,9 @@
 
 in vec4 Position;
 in vec3 Normal;
+in vec2 TexCoord;
+
+layout (binding = 0) uniform sampler2D woodTexture;
 
 out vec4 FragColor;
 
@@ -33,14 +36,17 @@ float fogCalculation(){
 }
 
 vec3 phongLighting(LightInfo Light, vec4 pos, vec3 n){
-    vec3 ambient = Light.Ambient * Material.Ambient;
+    vec3 texColour = texture(woodTexture, TexCoord).rgb;
+
+    vec3 diffuse = vec3(0), spec = vec3(0);
+    vec3 ambient = Light.Ambient * texColour;
 
     vec3 s = normalize(vec3(Light.Position - pos));
     float sDotN = max(dot(s, n), 0.0f);
 
-    vec3 diffuse = Material.Colour * sDotN;
+    diffuse = texColour * sDotN;
 
-    vec3 spec = vec3(0.0f);
+    spec = vec3(0.0f);
     if (sDotN > 0.0f){
         vec3 v = normalize(-pos.xyz);
         vec3 r = reflect(-s, n);

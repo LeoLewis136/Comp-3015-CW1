@@ -13,6 +13,7 @@ using std::endl;
 
 // Helper includes
 #include "helper/glutils.h"
+#include "helper/texture.h"
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
@@ -51,9 +52,9 @@ void SceneBasic_Uniform::initScene()
 
 	// Scene light values
 	// Specular
-	standardShaders.setUniform("lights[0].Specular", vec3(0.0f, 0.0f, 0.8f)); // LD
-	standardShaders.setUniform("lights[1].Specular", vec3(0.0f, 0.8f, 0.0f)); // LD
-	standardShaders.setUniform("lights[2].Specular", vec3(1.0f, 0.0f, 0.0f)); // LD
+	standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
+	standardShaders.setUniform("lights[1].Specular", vec3(0.8f, 0.8f, 0.0f)); // LD
+	standardShaders.setUniform("lights[2].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
 
 	// Ambient
 	standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
@@ -62,8 +63,8 @@ void SceneBasic_Uniform::initScene()
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
-	standardShaders.setUniform("Fog.MinDist", 0.0f);
-	standardShaders.setUniform("Fog.MaxDist", 2.0f);
+	standardShaders.setUniform("Fog.MinDist", 5.0f);
+	standardShaders.setUniform("Fog.MaxDist", 5.0f);
 
 	// Standard material values
 	standardShaders.setUniform("Material.Colour", vec3(0.2f, 0.55f, 0.9f)); // KD
@@ -76,6 +77,10 @@ void SceneBasic_Uniform::initScene()
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); 
 	
 	testMesh = ObjMesh::load("media/port.obj", true);
+
+	GLuint woodTexture = Texture::loadTexture("media/texture/WoodTexture.jpg");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, woodTexture);
 
 }
 

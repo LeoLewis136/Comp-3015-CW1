@@ -3,6 +3,9 @@ C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\glslprogram.cpp;C:\Users\L
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\glutils.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\glutils.obj
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\objmesh.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\objmesh.obj
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\ShaderManager.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\ShaderManager.obj
+C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\skybox.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\skybox.obj
+C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\stb_image.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\stb_image.obj
+C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\texture.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\texture.obj
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\torus.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\torus.obj
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\helper\trianglemesh.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\trianglemesh.obj
 C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\main.cpp;C:\Users\Leo\Documents\UNI work\Comp3015\Lab 1\Project_Template\x64\Debug\main.obj
