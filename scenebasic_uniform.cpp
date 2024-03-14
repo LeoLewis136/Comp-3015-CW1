@@ -52,14 +52,14 @@ void SceneBasic_Uniform::initScene()
 
 	// Scene light values
 	// Specular
-	standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
-	standardShaders.setUniform("lights[1].Specular", vec3(0.8f, 0.8f, 0.0f)); // LD
-	standardShaders.setUniform("lights[2].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
+	standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.0f, 0.0f)); // LD
+	standardShaders.setUniform("lights[1].Specular", vec3(0.0f, 0.8f, 0.0f)); // LD
+	standardShaders.setUniform("lights[2].Specular", vec3(0.0f, 0.0f, 0.8f)); // LD
 
 	// Ambient
-	standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
-	standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.2f, 0.0f)); // LA
-	standardShaders.setUniform("lights[2].Ambient", vec3(0.2f, 0.0f, 0.0f)); // LA
+	standardShaders.setUniform("lights[0].Ambient", vec3(0.5f, 0.0f, 0.0f)); // LA
+	standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.5f, 0.0f)); // LA
+	standardShaders.setUniform("lights[2].Ambient", vec3(0.0f, 0.0f, 0.5f)); // LA
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
@@ -69,7 +69,7 @@ void SceneBasic_Uniform::initScene()
 	// Standard material values
 	standardShaders.setUniform("Material.Colour", vec3(0.2f, 0.55f, 0.9f)); // KD
 	standardShaders.setUniform("Material.Specular", vec3(0.8f, 0.8f, 0.8f)); // KS 
-	standardShaders.setUniform("Material.Ambient", vec3(0.2f, 0.55f, 0.9f)); // KA 
+	standardShaders.setUniform("Material.Ambient", vec3(0.0f, 0.5f, 0.0f)); // KA 
 	standardShaders.setUniform("Material.Shininess", 100.0f); // Shininess
 
 
@@ -79,8 +79,11 @@ void SceneBasic_Uniform::initScene()
 	testMesh = ObjMesh::load("media/port.obj", true);
 
 	GLuint woodTexture = Texture::loadTexture("media/texture/WoodTexture.jpg");
+	GLuint woodNormal = Texture::loadTexture("media/texture/WoodNormal1.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, woodTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, woodNormal);
 
 }
 
