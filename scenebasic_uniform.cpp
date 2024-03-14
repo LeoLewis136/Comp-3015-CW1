@@ -13,6 +13,7 @@ using std::endl;
 
 // Helper includes
 #include "helper/glutils.h"
+#include "helper/texture.h"
 
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
@@ -33,7 +34,7 @@ void SceneBasic_Uniform::initScene()
 	projection = mat4(1.0f);
 	
 	model = glm::rotate(model, glm::radians(-35.0f), vec3(1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
+	//model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	
 
@@ -51,9 +52,9 @@ void SceneBasic_Uniform::initScene()
 
 	// Scene light values
 	// Specular
-	standardShaders.setUniform("lights[0].Specular", vec3(0.0f, 0.0f, 0.8f)); // LD
-	standardShaders.setUniform("lights[1].Specular", vec3(0.0f, 0.8f, 0.0f)); // LD
-	standardShaders.setUniform("lights[2].Specular", vec3(1.0f, 0.0f, 0.0f)); // LD
+	standardShaders.setUniform("lights[0].Specular", vec3(0.0f, 1.0f, 1.0f)); // LD
+	standardShaders.setUniform("lights[1].Specular", vec3(0.0f, 1.0f, 0.0f)); // LD
+	standardShaders.setUniform("lights[2].Specular", vec3(1.0f, 1.0f, 0.0f)); // LD
 
 	// Ambient
 	standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
@@ -62,19 +63,23 @@ void SceneBasic_Uniform::initScene()
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
-	standardShaders.setUniform("Fog.MinDist", 0.0f);
-	standardShaders.setUniform("Fog.MaxDist", 2.0f);
+	standardShaders.setUniform("Fog.MinDist", 1.0f);
+	standardShaders.setUniform("Fog.MaxDist", 5.0f);
 
-	// Standard material values
-	standardShaders.setUniform("Material.Colour", vec3(0.2f, 0.55f, 0.9f)); // KD
-	standardShaders.setUniform("Material.Specular", vec3(0.8f, 0.8f, 0.8f)); // KS 
-	standardShaders.setUniform("Material.Ambient", vec3(0.2f, 0.55f, 0.9f)); // KA 
-	standardShaders.setUniform("Material.Shininess", 100.0f); // Shininess
+	
 
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f); 
 	
+
+	GLuint woodTex = Texture::loadTexture("media/texture/WoodTexture.jpg");
+	GLuint woodNormal = Texture::loadTexture("media/texture/WoodNormal1.jpg");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, woodTex);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, woodNormal);
+
 	testMesh = ObjMesh::load("media/port.obj", true);
 
 }
@@ -114,6 +119,12 @@ void SceneBasic_Uniform::update( float t )
 void SceneBasic_Uniform::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+	// Standard material values
+	standardShaders.setUniform("Material.Colour", vec3(0.2f, 0.55f, 0.9f)); // KD 
+	standardShaders.setUniform("Material.Specular", vec3(0.95f, 0.95f, 0.95f)); // KS  
+	standardShaders.setUniform("Material.Ambient", vec3(0.2f, 0.55f, 0.9f)); // KA  
+	standardShaders.setUniform("Material.Shininess", 100.0f); // Shininess 
 
 	setMatricies();
 

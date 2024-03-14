@@ -1,7 +1,12 @@
 #version 460
 
-in vec4 Position;
-in vec3 Normal;
+in vec3 Position;
+in vec3 LightDir;
+in vec3 ViewDir;
+in vec2 TexCoord;
+
+layout (binding = 0) uniform sampler2D ColourTex;
+layout (binding = 1) uniform sampler2D NormalTex;
 
 out vec4 FragColor;
 
@@ -32,17 +37,18 @@ float fogCalculation(){
     return clamp(fogFactor, 0.0f, 1.0f);
 }
 
-vec3 phongLighting(LightInfo Light, vec4 pos, vec3 n){
-    vec3 ambient = Light.Ambient * Material.Ambient;
+vec3 phongLighting(LightInfo Light, vec3 n){
+    vec3 texColour = texture(ColourTex, TexCoord).rgb;
+    vec3 ambient = Light.Ambient * texColour;
 
-    vec3 s = normalize(vec3(Light.Position - pos));
+    vec3 s = normalize(LightDir);
     float sDotN = max(dot(s, n), 0.0f);
 
-    vec3 diffuse = Material.Colour * sDotN;
+    vec3 diffuse = texColour * sDotN;
 
     vec3 spec = vec3(0.0f);
     if (sDotN > 0.0f){
-        vec3 v = normalize(-pos.xyz);
+        vec3 v = normalize(ViewDir);
         vec3 r = reflect(-s, n);
         spec = Material.Specular * pow(max(dot(r, v), 0.0f), Material.Shininess);
     }
@@ -51,9 +57,12 @@ vec3 phongLighting(LightInfo Light, vec4 pos, vec3 n){
 }
 
 void main() {
+    vec3 norm = texture(NormalTex, TexCoord).xyz;
+    norm.xy = 2.0 * norm.xy - 1.0;
+
     vec3 LightIntensity = vec3(0.0f);
     for (int i = 0; i < 3; i++){
-        LightIntensity += phongLighting(lights[i], Position, Normal);
+        LightIntensity += phongLighting(lights[i], norm);
     }
     
     

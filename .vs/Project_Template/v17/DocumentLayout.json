@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:scenebasic_uniform.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\stb_image.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:helper\\stb_image.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{2424A6AC-480B-441A-94EA-86C5C10C6ABF}|Project_Template.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -42,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -50,7 +54,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "stb_image.cpp",
+              "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\stb_image.cpp",
+              "RelativeDocumentMoniker": "helper\\stb_image.cpp",
+              "ToolTip": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\stb_image.cpp",
+              "RelativeToolTip": "helper\\stb_image.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-14T02:49:42.373Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "basic_uniform.vert",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\shader\\basic_uniform.vert",
               "RelativeDocumentMoniker": "shader\\basic_uniform.vert",
@@ -58,12 +74,11 @@
               "RelativeToolTip": "shader\\basic_uniform.vert",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-03-10T22:59:53.896Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-10T22:59:53.896Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "scenerunner.h",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\scenerunner.h",
               "RelativeDocumentMoniker": "helper\\scenerunner.h",
@@ -75,7 +90,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "objmesh.h",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\objmesh.h",
               "RelativeDocumentMoniker": "helper\\objmesh.h",
@@ -87,7 +102,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ShaderManager.h",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\ShaderManager.h",
               "RelativeDocumentMoniker": "helper\\ShaderManager.h",
@@ -99,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ShaderManager.cpp",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\helper\\ShaderManager.cpp",
               "RelativeDocumentMoniker": "helper\\ShaderManager.cpp",
@@ -111,7 +126,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "scenebasic_uniform.h",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\scenebasic_uniform.h",
               "RelativeDocumentMoniker": "scenebasic_uniform.h",
@@ -119,8 +134,7 @@
               "RelativeToolTip": "scenebasic_uniform.h",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAAUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-03-09T13:54:09.471Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-03-09T13:54:09.471Z"
             },
             {
               "$type": "Document",
@@ -130,14 +144,14 @@
               "RelativeDocumentMoniker": "scenebasic_uniform.cpp",
               "ToolTip": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\scenebasic_uniform.cpp",
               "RelativeToolTip": "scenebasic_uniform.cpp",
-              "ViewState": "AQIAACcAAAAAAAAAAAAAAEEAAAAsAAAA",
+              "ViewState": "AQIAACcAAAAAAAAAAAAAAHwAAABUAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-01-26T01:26:05.482Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "main.cpp",
               "DocumentMoniker": "C:\\Users\\Leo\\Documents\\UNI work\\Comp3015\\Lab 1\\main.cpp",
               "RelativeDocumentMoniker": "main.cpp",
@@ -145,8 +159,7 @@
               "RelativeToolTip": "main.cpp",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-01-26T01:26:05.569Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-01-26T01:26:05.569Z"
             }
           ]
         }
