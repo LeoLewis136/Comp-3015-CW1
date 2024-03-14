@@ -37,29 +37,36 @@ void SceneBasic_Uniform::initScene()
 	model = glm::rotate(model, glm::radians(15.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	
+	/* --- Unused --- multiple lights in scene
+	To be reimplemented when normal mapping is complete */
 
 	// ---- Point light setup ---- //
-	for (int i = 0; i < 3; i++) {
-		std::stringstream name;
-		float x, z;
+	//for (int i = 0; i < 3; i++) {
+	//	std::stringstream name;
+	//	float x, z;
 
-		name << "lights[" << i << "].Position";
-		x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
-		z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
+	//	name << "lights[" << i << "].Position";
+	//	x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
+	//	z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
 
-		standardShaders.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
-	}
+	//	standardShaders.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z + 1.0f, 1.0f));
+	//}
 
-	// Scene light values
-	// Specular
-	standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
-	standardShaders.setUniform("lights[1].Specular", vec3(0.8f, 0.8f, 0.0f)); // LD
-	standardShaders.setUniform("lights[2].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
+	//// Scene light values
+	//// Specular
+	//standardShaders.setUniform("lights[0].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
+	//standardShaders.setUniform("lights[1].Specular", vec3(0.8f, 0.8f, 0.0f)); // LD
+	//standardShaders.setUniform("lights[2].Specular", vec3(0.8f, 0.8f, 0.8f)); // LD
 
-	// Ambient
-	standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
-	standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.2f, 0.0f)); // LA
-	standardShaders.setUniform("lights[2].Ambient", vec3(0.2f, 0.0f, 0.0f)); // LA
+	//// Ambient
+	//standardShaders.setUniform("lights[0].Ambient", vec3(0.0f, 0.0f, 0.2f)); // LA
+	//standardShaders.setUniform("lights[1].Ambient", vec3(0.0f, 0.2f, 0.0f)); // LA
+	//standardShaders.setUniform("lights[2].Ambient", vec3(0.2f, 0.0f, 0.0f)); // LA
+	
+	// --- Temporary --- Single light source uniform setup
+	standardShaders.setUniform("Light.Position", vec3(5.0f, 5.0f, 5.0f));
+	standardShaders.setUniform("Light.Specular", vec3(1.0f, 1.0f, 1.0f));
+	standardShaders.setUniform("Light.Ambient", vec3(0.2f));
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
@@ -79,8 +86,11 @@ void SceneBasic_Uniform::initScene()
 	testMesh = ObjMesh::load("media/port.obj", true);
 
 	GLuint woodTexture = Texture::loadTexture("media/texture/WoodTexture.jpg");
+	GLuint woodNormal = Texture::loadTexture("media/texture/TempNormal.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, woodTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, woodNormal);
 
 }
 
@@ -121,6 +131,7 @@ void SceneBasic_Uniform::render()
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 	setMatricies();
+
 
 	testMesh->render();
 	//testTorus.render();
