@@ -4,8 +4,8 @@ in vec2 TexCoord;
 in vec3 Position;
 in vec3 Normal;
 
-layout (binding = 0) uniform sampler2D woodTexture;
-layout (binding = 1) uniform sampler2D woodNormal;
+layout (binding = 0) uniform sampler2D albedoTexture; // GL_TEXTURE0 is object "albedo" texture
+layout (binding = 1) uniform sampler2D normalTexture; // GL_TEXTURE1 is object normal texture
 
 layout (location = 0) out vec4 FragColor;
 
@@ -33,36 +33,40 @@ uniform struct MaterialInfo{
 float fogCalculation(){
     float dist = abs(Position.z);
     float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
-    return clamp(fogFactor, 0.0f, 1.0f);
+    return clamp(fogFactor, 0.0f, 0.8f);
 }
 
-vec3 phongLighting(LightInfo _Light, vec3 pos, vec3 n){
-    vec3 texColour = texture(woodTexture, TexCoord).rgb;
+vec4 phongLighting(LightInfo _Light, vec3 pos, vec3 n){
+    vec4 texColour = texture(albedoTexture, TexCoord);
 
-    vec3 diffuse = vec3(0), spec = vec3(0);
-    vec3 ambient = _Light.Ambient * texColour;
+    if (texColour.a < 0.1){
+        discard;
+    }
 
-    vec3 s = normalize(_Light.Position.xyz - pos);
+    vec4 diffuse = vec4(0), spec = vec4(0);
+    vec4 ambient = vec4(_Light.Ambient, 0.0f) * texColour;
+
+    vec3 s = normalize((vec4(_Light.Position, 1.0f).xyz - pos));
     float sDotN = max(dot(s, n), 0.0f);
 
     diffuse = texColour * sDotN;
 
-    vec3 v = normalize(-pos.xyz);
-    vec3 r = reflect(-s, n);
-    spec = Material.Specular * pow(max(dot(r, v), 0.0f), Material.Shininess);
+    vec4 v = vec4(normalize(-pos.xyz), 1.0f);
+    vec4 r = vec4(reflect(-s, n), 1.0f);
+    spec = vec4(_Light.Specular, 0.0f) * pow(max(dot(r, v), 0.0f), Material.Shininess);
 
-    return _Light.Specular * (diffuse + spec) + ambient;
+    return vec4(_Light.Specular, 1.0) * (diffuse + spec) + ambient;
 }
 
 void main() {
-    vec3 norm = texture(woodNormal, TexCoord).xyz;
+    vec3 norm = texture(normalTexture, TexCoord).xyz;
     norm.xy = 2.0 * norm.xy - 1.0;
     norm = normalize(norm + Normal);
 
-    vec3 LightIntensity = vec3(0.0f);
+    vec4 LightIntensity = vec4(0.0f);
     for (int i = 0; i < 3; i++){
         LightIntensity += phongLighting(lights[i], Position, norm);
     }
 
-    FragColor = vec4(mix(Fog.FogColour, LightIntensity, fogCalculation()), 1.0);
+    FragColor = mix(vec4(Fog.FogColour, 1.0), LightIntensity, fogCalculation());
 }

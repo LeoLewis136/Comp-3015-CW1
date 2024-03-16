@@ -1,4 +1,5 @@
 #include "trianglemesh.h"
+#include "glutils.h"
 
 void TriangleMesh::initBuffers(
         std::vector<GLuint> * indices,
@@ -49,7 +50,7 @@ void TriangleMesh::initBuffers(
     glGenVertexArrays( 1, &vao );
     glBindVertexArray(vao);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuf);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuf); 
 
     // Position
     glBindBuffer(GL_ARRAY_BUFFER, posBuf);

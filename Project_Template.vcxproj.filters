@@ -25,6 +25,9 @@
     <Filter Include="helper\stb">
       <UniqueIdentifier>{2eeab77b-5d84-4893-b9df-1b2ed789b189}</UniqueIdentifier>
     </Filter>
+    <Filter Include="custom">
+      <UniqueIdentifier>{87fa9a57-fcba-401f-8426-76dcdd76c2d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,9 +45,6 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="helper\ShaderManager.cpp">
-      <Filter>helper</Filter>
-    </ClCompile>
     <ClCompile Include="helper\trianglemesh.cpp">
       <Filter>helper</Filter>
     </ClCompile>
@@ -57,11 +57,20 @@
     <ClCompile Include="helper\texture.cpp">
       <Filter>helper</Filter>
     </ClCompile>
+    <ClCompile Include="helper\stb_image.cpp">
+      <Filter>helper\stb</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\ShaderManager.cpp">
+      <Filter>custom</Filter>
+    </ClCompile>
     <ClCompile Include="helper\skybox.cpp">
       <Filter>helper</Filter>
     </ClCompile>
-    <ClCompile Include="helper\stb_image.cpp">
-      <Filter>helper\stb</Filter>
+    <ClCompile Include="helper\cube.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>custom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +78,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shader\basic_uniform.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\skybox.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader\skybox.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
@@ -97,9 +112,6 @@
     <ClInclude Include="helper\drawable.h">
       <Filter>helper</Filter>
     </ClInclude>
-    <ClInclude Include="helper\ShaderManager.h">
-      <Filter>helper</Filter>
-    </ClInclude>
     <ClInclude Include="helper\trianglemesh.h">
       <Filter>helper</Filter>
     </ClInclude>
@@ -109,11 +121,23 @@
     <ClInclude Include="helper\torus.h">
       <Filter>helper</Filter>
     </ClInclude>
+    <ClInclude Include="helper\texture.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\ShaderManager.h">
+      <Filter>custom</Filter>
+    </ClInclude>
     <ClInclude Include="helper\skybox.h">
       <Filter>helper</Filter>
     </ClInclude>
-    <ClInclude Include="helper\texture.h">
+    <ClInclude Include="helper\aabb.h">
       <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\cube.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>custom</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

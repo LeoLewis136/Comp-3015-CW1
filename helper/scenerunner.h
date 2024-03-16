@@ -13,11 +13,13 @@
 
 class SceneRunner {
 private:
-    GLFWwindow * window;
+    
     int fbw, fbh;
 	bool debug;           // Set true to enable debug messages
 
 public:
+    GLFWwindow* window;
+
     SceneRunner(const std::string & windowTitle, int width = WIN_WIDTH, int height = WIN_HEIGHT, int samples = 0) : debug(true) {
         // Initialize GLFW
         if( !glfwInit() ) exit( EXIT_FAILURE );
@@ -70,6 +72,7 @@ public:
     }
 
     int run(Scene & scene) {
+
         scene.setDimensions(fbw, fbh);
         scene.initScene();
         scene.resize(fbw, fbh);
@@ -120,6 +123,7 @@ private:
         while( ! glfwWindowShouldClose(window) && !glfwGetKey(window, GLFW_KEY_ESCAPE) ) {
             GLUtils::checkForOpenGLError(__FILE__,__LINE__);
 			
+            scene.manageInput(window);
             scene.update(float(glfwGetTime()));
             scene.render();
             glfwSwapBuffers(window);
@@ -127,7 +131,10 @@ private:
             glfwPollEvents();
 			int state = glfwGetKey(window, GLFW_KEY_SPACE);
 			if (state == GLFW_PRESS)
-				scene.animate(!scene.animating());
+				scene.animate(window, !scene.animating());
+                
         }
     }
+
+    
 };

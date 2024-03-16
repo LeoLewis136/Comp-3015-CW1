@@ -5,6 +5,8 @@
 
 class SkyBox : public TriangleMesh
 {
+private:
+
 public:
     SkyBox(float size = 50.0f);
 };

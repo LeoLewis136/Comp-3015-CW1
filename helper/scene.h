@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 class Scene
@@ -39,8 +41,21 @@ public:
       Called when screen is resized
       */
     virtual void resize(int, int) = 0;
+
+    virtual void manageInput(GLFWwindow* myWindow) = 0;
+    virtual void MouseCallback(GLFWwindow* window, double xpos, double ypos) = 0;
     
-    void animate( bool value ) { m_animate = value; }
+    void animate(GLFWwindow* myWindow, bool value ) { 
+        if (value) {
+            m_animate = value;
+            glfwSetInputMode(myWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+
+        else {
+            m_animate = value;
+            glfwSetInputMode(myWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
+    }
     bool animating() { return m_animate; }
     
 protected:

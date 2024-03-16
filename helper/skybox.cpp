@@ -53,3 +53,4 @@ SkyBox::SkyBox(float size)
 
     initBuffers(&el, &v, &n);
 }
+
