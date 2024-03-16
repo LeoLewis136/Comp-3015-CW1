@@ -72,6 +72,12 @@
     <ClCompile Include="Camera.cpp">
       <Filter>custom</Filter>
     </ClCompile>
+    <ClCompile Include="helper\sphere.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
+    <ClCompile Include="helper\plane.cpp">
+      <Filter>helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag">
@@ -138,6 +144,15 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>custom</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\random.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\sphere.h">
+      <Filter>helper</Filter>
+    </ClInclude>
+    <ClInclude Include="helper\plane.h">
+      <Filter>helper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

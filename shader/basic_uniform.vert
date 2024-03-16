@@ -9,16 +9,21 @@ out vec2 TexCoord;
 out vec3 Position;
 out vec3 Normal;
 
+out vec3 ViewPos;
+
+
 // Projection
-uniform mat4 ModelViewMatrix;
-uniform mat3 NormalMatrix;
+uniform mat4 ModelIn;
 uniform mat4 MVP;
+uniform vec3 CamPos;
 
 void main()
 {
-    TexCoord = VertexTexCoord;
-    Position = (ModelViewMatrix * vec4(VertexPosition, 1.0)).xyz;
-    Normal = normalize(NormalMatrix * VertexNormal);
+    ViewPos = CamPos;
 
-    gl_Position = MVP * vec4(VertexPosition, 1.0f);
+    TexCoord = VertexTexCoord;
+    Position = VertexPosition;
+    Normal = VertexNormal;
+
+    gl_Position = MVP * vec4(VertexPosition.x, VertexPosition.y, VertexPosition.z, 1.0f);
 }
