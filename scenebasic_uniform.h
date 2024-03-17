@@ -32,9 +32,8 @@ private:
     bool mouseEntered = false;
     
     // Scene Lights
-    vec3 light0Position = vec3(25.0f, 50.0f, 25.0f);
-    vec3 light1Position = vec3(-100.0f, 100.0f, -100.0f);
-    vec3 light2Position = vec3(-50.0f, 10.0f, -50.0f);
+    vec3 light0Position = vec3(28.0f, 2.5f, 1.0f);
+    vec3 light1Position = vec3(28.0f, 2.5f, 1.0f);
 
     vec2 lastMousePos = vec2(0.0f);
 
@@ -49,16 +48,23 @@ private:
     
     std::unique_ptr<ObjMesh> terrain;
     std::unique_ptr<ObjMesh> dock;
+    std::unique_ptr<ObjMesh> lantern;
 
     std::vector<std::unique_ptr<ObjMesh>> trees;
+    std::vector<vec4> treePositions;
 
     // Textures
     GLuint woodTexture;
     GLuint woodNormal;
+    GLuint blankNormal;
+
+    GLuint lanternTexture;
 
     GLuint skyboxTexture;
     GLuint treeTexture;
     GLuint terrainTexture;
+    GLuint flowerTexture;
+    GLuint blankMix;
     GLuint waterTexture;
 
     GLuint renderTex, intermediateTex, fsQuad, intermediateFBO, renderFBO; // Multi-Pass rendering GLuints
@@ -66,12 +72,13 @@ private:
     void setMatricies(GLSLProgram& currentShaders);
 
     void compile();
-    void assignTextures(GLuint albedo, GLuint normal);
     void assignCubemap(GLuint albedo);
-    void assignTexture(GLuint albedo);
-    void assignMaterial(float materalShine);
+    void assignTexture(GLuint albedo, GLuint normal, GLuint albedo2);
+    void assignMaterial(float shininess);
 
     void positionModel(glm::vec3 newPosition);
+    void rotateModel(float rotation, vec3 axis);
+    void setScale(float scale);
 
     // Multi-Pass rendering
     void setupFBO();

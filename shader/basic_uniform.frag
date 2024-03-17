@@ -8,6 +8,7 @@ in vec3 ViewPos; // The position of the camera
 
 layout (binding = 0) uniform sampler2D albedoTexture; // GL_TEXTURE0 is object "albedo" texture
 layout (binding = 1) uniform sampler2D normalTexture; // GL_TEXTURE1 is object normal texture
+layout (binding = 2) uniform sampler2D albedoTexture2; // GL_TEXTURE2 is for texture mixing
 layout (binding = 5) uniform sampler2D RenderTex; // Second pass render texture
 
 uniform float Weights[5];
@@ -23,7 +24,7 @@ uniform struct LightInfo{
     vec3 Specular;
     vec3 Diffuse;
 
-} lights[3];
+} lights[2];
 
 uniform struct FogInfo{
     float MaxDist; // Distance of 100% fog
@@ -39,14 +40,21 @@ uniform struct MaterialInfo{
 }Material;
 
 float fogCalculation(){
-    float dist = abs(Position.z);
+    float dist = length(ViewPos - Position);
     float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
     return clamp(fogFactor, 0.3f, 1.0f);
 }
 
 // pos = fragment pos in world space, n = fragent normal, _Light = current light object
 vec4 phongLighting(LightInfo _Light, vec3 pos, vec3 n){
-    vec4 texColour = texture(albedoTexture, TexCoord);
+    vec4 texColour1 = texture(albedoTexture, TexCoord);
+    vec4 texColour2 = texture(albedoTexture2, TexCoord);
+
+    vec4 texColour = texColour1;
+    if (texColour2.a != 0.0f){
+        texColour = texColour2;
+        texColour.a = 1.0f;
+    }
 
     if (texColour.a < 0.1){
         discard;
@@ -56,47 +64,41 @@ vec4 phongLighting(LightInfo _Light, vec3 pos, vec3 n){
     vec3 ambient = _Light.Ambient * vec3(texColour);
 
     // -- Diffuse --
-    vec3 lightDir = normalize(_Light.Position - pos);
-    vec3 normal = normalize(n);
-    float diff = max(dot(lightDir, normal), 0.0);
-    vec3 diffuse = diff * _Light.Diffuse;
+    vec3 lightDist = (_Light.Position - pos);
+    if (length(lightDist) < 60){
+        float lightMult = 1 - (length(lightDist) / 60);
 
-    // Specular reflections
-    vec3 viewDir = normalize(ViewPos - pos);
-    
-    // Blinn Phong
-    vec3 halfwayDir = normalize(lightDir + viewDir);
-    vec3 spec = pow(max(dot(normal, halfwayDir), 0.0f), Material.Shininess) * _Light.Specular;
+        vec3 lightDir = normalize(lightDist);
+        vec3 normal = normalize(n);
+        float diff = max(dot(lightDir, normal), 0.0);
+        vec3 diffuse = diff * _Light.Diffuse;
 
-    return vec4(ambient + (diffuse + spec) + texColour.rgb, 1.0);
-    
+        // Specular reflections
+        vec3 viewDir = normalize(ViewPos - pos);
+        
+        // Blinn Phong
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+        vec3 spec = pow(max(dot(normal, halfwayDir), 0.0f), Material.Shininess) * _Light.Specular;
 
-
-    // vec4 diffuse = vec4(0), spec = vec4(0);
-    // vec4 ambient = vec4(_Light.Ambient, 0.0f) * texColour;
-
-    // vec3 s = normalize(((vec4(_Light.Position, 1.0f)).xyz - pos));
-    // float sDotN = max(dot(s, n), 0.0f);
-
-    // diffuse = texColour * sDotN;
-
-    // vec4 v = vec4(normalize(ViewPos - pos.xyz), 1.0f);
-    // vec4 r = vec4(reflect(-s, n), 1.0f);
-    // spec = vec4(_Light.Specular, 1.0f) * pow(max(dot(v, r), 0.0f), Material.Shininess);
-
-    // return vec4(_Light.Specular, 1.0) * (diffuse + spec) + ambient;
+        return vec4((ambient + (diffuse + spec) + texColour.rgb), 1.0);
+    }
+    else {
+        return vec4(0.0f);
+    }
 }
 
 vec4 pass1(){
     vec3 norm = texture(normalTexture, TexCoord).xyz;
-    //norm.xy = 2.0 * norm.xy - 1.0;
     norm = normalize(norm + Normal);
 
     vec4 LightIntensity = vec4(0.0f);
     for (int i = 0; i < 3; i++){
         LightIntensity += phongLighting(lights[i], Position, norm);
     }
-    return mix(vec4(Fog.FogColour, 1.0), (LightIntensity / lights.length()), fogCalculation());
+    vec4 lighting =  mix(vec4(Fog.FogColour, 1.0), (LightIntensity / (lights.length() * 2)), fogCalculation());
+    float Gamma = 2.2f;
+    return vec4( pow( lighting, vec4(1.0/Gamma))); 
+
 }
 
 vec4 pass3(){

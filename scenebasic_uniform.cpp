@@ -35,6 +35,17 @@ void SceneBasic_Uniform::initScene()
 {
 	compile();
 
+	treePositions.push_back(vec4(30.0f, 6.5f, 30.0f, 10.0f));
+	treePositions.push_back(vec4(30.0f, 9.0f, -30.0f, 25.0f));
+	treePositions.push_back(vec4(30.0f, 6.0f, 4.0f, 0.0f));
+	treePositions.push_back(vec4(20.0f, 6.9f, -20.0f, 48.0f));
+	treePositions.push_back(vec4(40.0f, 8.8f, -5.0f, 180.0f));
+	treePositions.push_back(vec4(28.0f, 8.0f, -15.0f, 280.0f));
+	treePositions.push_back(vec4(35.0f, 6.5f, 20.0f, 95.0f));
+	treePositions.push_back(vec4(26.0f, 4.2f, 14.0f, 250.0f));
+	treePositions.push_back(vec4(38.0f, 6.0f, 10.0f, 120.0f));
+	treePositions.push_back(vec4(40.0f, 8.5f, -28.0f, 60.0f));
+
 	model = mat4(1.0f);
 	view = glm::lookAt(vec3(0.0f, 0.0f, 1.0f), vec3(0.f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
@@ -50,21 +61,18 @@ void SceneBasic_Uniform::initScene()
 	// Specular
 	standardShaders.setUniform("lights[0].Specular", vec3(1.0f, 0.98f, 0.86f)); // LD
 	standardShaders.setUniform("lights[1].Specular", vec3(1.0f, 0.98f, 0.86f)); // LD
-	standardShaders.setUniform("lights[2].Specular", vec3(1.0f, 0.98f, 0.86f)); // LD
 
 	standardShaders.setUniform("lights[0].Diffuse", vec3(0.4f, 0.4f, 0.4f)); // LD
 	standardShaders.setUniform("lights[1].Diffuse", vec3(0.4f, 0.4f, 0.4f)); // LD
-	standardShaders.setUniform("lights[2].Diffuse", vec3(0.0f, 0.0f, 0.0f)); // LD
 
 	// Ambient
 	standardShaders.setUniform("lights[0].Ambient", vec3(0.1f, 0.1f, 0.1f)); // LA
 	standardShaders.setUniform("lights[1].Ambient", vec3(0.1f, 0.1f, 0.1f)); // LA
-	standardShaders.setUniform("lights[2].Ambient", vec3(0.0f, 0.0f, 0.0f)); // LA
 
 	// Fog Setup
 	standardShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
-	standardShaders.setUniform("Fog.MinDist", 10.0f);
-	standardShaders.setUniform("Fog.MaxDist", 50.0f);
+	standardShaders.setUniform("Fog.MinDist", 3.0f);
+	standardShaders.setUniform("Fog.MaxDist", 30.0f);
 
 	// Gaussian weight setup
 	float weights[5], sum, sigma2 = 8.0f;
@@ -85,7 +93,7 @@ void SceneBasic_Uniform::initScene()
 
 	skyboxShaders.use();
 	skyboxShaders.setUniform("Fog.FogColour", vec3(0.2, 0.2, 0.2));
-	skyboxShaders.setUniform("Fog.MinDist", 10.0f);
+	skyboxShaders.setUniform("Fog.MinDist", 3.0f);
 	skyboxShaders.setUniform("Fog.MaxDist", 30.0f);
 
 
@@ -95,17 +103,24 @@ void SceneBasic_Uniform::initScene()
 	
 	terrain = ObjMesh::load("media/terrain.obj", true);
 	dock = ObjMesh::load("media/port.obj", true);
+	lantern = ObjMesh::load("media/Lantern.obj", true);
 
 	for (int i = 0; i < 10; i++) {
 		trees.push_back(ObjMesh::load("media/tree.obj", true));
 	}
 
+	lanternTexture = Texture::loadTexture("media/texture/Lantern.png");
 	woodTexture = Texture::loadTexture("media/texture/WoodTexture.jpg");
 	woodNormal = Texture::loadTexture("media/texture/WoodNormal.jpg");
 	skyboxTexture = Texture::loadCubeMap("media/texture/Skybox/vz_sinister", ".png");
 	treeTexture = Texture::loadTexture("media/texture/Tree.png");
 	terrainTexture = Texture::loadTexture("media/texture/Grass.png");
+	flowerTexture = Texture::loadTexture("media/texture/Flowers.png");
 	waterTexture = Texture::loadTexture("media/texture/Water.png");
+
+	blankNormal = Texture::loadTexture("media/texture/TempNormal.jpg");
+	blankMix = Texture::loadTexture("media/texture/TransparentTex.png");
+
 
 	setupFBO();
 
@@ -228,9 +243,6 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::setMatricies(GLSLProgram& currentShaders) {
 	mat4 mv = projection * view * model;
-
-
-
 	currentShaders.setUniform("ModelIn", model);
 	currentShaders.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
 	currentShaders.setUniform("MVP", mv);
@@ -243,6 +255,10 @@ void SceneBasic_Uniform::update( float t )
 {
 	float delta = t - lastFrame;
 	lastFrame = t;
+
+	vec3 tempPos = vec3(sinf(glfwGetTime()) * 60, 30.0f, cosf(glfwGetTime()) * 60); // Animating light position
+	light1Position = tempPos;
+
 
 	moveCamera(t);
 }
@@ -267,32 +283,38 @@ void SceneBasic_Uniform::pass1() {
 	standardShaders.setUniform("Pass", 1); // Define which render pass is being used
 
 	standardShaders.setUniform("lights[0].Position", light0Position); 
-	std::cout << light0Position.x << "," << light0Position.y << "," << light0Position.z << endl;
-	standardShaders.setUniform("lights[1].Position", vec3(-100.0f, 100.0f, -100.0f)); 
-	standardShaders.setUniform("lights[2].Position", vec3(-50.0f, 10.0f, -50.0f)); 
+	standardShaders.setUniform("lights[1].Position", light1Position); 
 
 	positionModel(vec3(0.0f));
 	setMatricies(standardShaders);
 	assignMaterial(5.0f);
 	// Standard obejct rendering
-	assignTexture(terrainTexture);
+	assignTexture(terrainTexture, blankNormal, flowerTexture);
 	terrain->render();
 
-	assignTexture(treeTexture);
+	assignTexture(treeTexture , blankNormal, blankMix);
 	for (int i = 0; i < trees.size(); i++) {
-		trees[i]->render();
-		model = glm::translate(model, vec3(2.0f, 0.0f, -4.0f));
+		positionModel(vec3(treePositions[i]));
+		rotateModel(radians(treePositions[i].a), vec3(0, 1, 0));
+
 		setMatricies(standardShaders);
+		trees[i]->render();
 	}
 
-	positionModel(vec3(25.0f, 0.5f, 0.0f));
+	positionModel(vec3(28.0f, 2.5f, 1.0f));
 	setMatricies(standardShaders);
-	assignTextures(woodTexture, woodNormal);
+	assignTexture(lanternTexture, blankNormal, blankMix);
+	lantern->render();
+
+	positionModel(vec3(23.0f, 0.5f, 0.0f));
+	setScale(2.0f);
+	setMatricies(standardShaders);
+	assignTexture(woodTexture, woodNormal, blankMix);
 	dock->render();
 
 	positionModel(vec3(0.0f));
 	setMatricies(standardShaders);
-	assignTexture(waterTexture);
+	assignTexture(waterTexture, woodNormal, blankMix);
 	assignMaterial(32.0f);
 	water.render();
 
@@ -422,6 +444,14 @@ void SceneBasic_Uniform::positionModel(vec3 newPosition) {
 	model = translate(model, newPosition);
 }
 
+void SceneBasic_Uniform::rotateModel(float rotation, vec3 axis) { 
+	model = rotate(model, rotation, axis);
+}
+
+void SceneBasic_Uniform::setScale(float scale) {
+	model = glm::scale(model, vec3(scale));
+}
+
 void SceneBasic_Uniform::assignMaterial(float shininess) {
 	standardShaders.setUniform("Material.Shininess", shininess); // Shininess
 }
@@ -436,19 +466,17 @@ void SceneBasic_Uniform::resize(int w, int h)
 	projection = glm::perspective(glm::radians(70.0f), (float)w / h, 0.3f, 200.0f);
 }
 
-void SceneBasic_Uniform::assignTextures(GLuint albedo, GLuint normal) {
+
+void SceneBasic_Uniform::assignTexture(GLuint albedo, GLuint normal, GLuint albedo2) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, albedo);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, normal);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, albedo2);
 }
 
 void SceneBasic_Uniform::assignCubemap(GLuint albedo) {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, albedo);
-}
-
-void SceneBasic_Uniform::assignTexture(GLuint albedo) {
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, albedo);
 }
